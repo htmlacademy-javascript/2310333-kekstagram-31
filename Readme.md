@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Кирилл Третьяков](https://up.htmlacademy.ru/javascript/31/user/2310333).
-* Наставник:  [Ольга Ветер](https://htmlacademy.ru/profile/id73199).
+* Наставник: [Ольга Ветер](https://htmlacademy.ru/profile/id73199).
 
 ---
 
