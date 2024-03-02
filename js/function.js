@@ -1,6 +1,6 @@
 //Тест на переполнение формы:
 
-function stringLength(string, maxLength) {
+/*function stringLength(string, maxLength) {
   return string.length <= maxLength;
 }
 
@@ -62,7 +62,7 @@ console.log(wtf('Сегодня 20 февраля 2024 года, за окном
 
 //Вариант решения задания с тренажёра:
 
-/*let qualificationDistance = 200;
+let qualificationDistance = 200;
 let attempts = [120, 150, 160, 201, 203, 180, 202];
 let qualified = false;
 let averageBest = 0;
@@ -97,25 +97,8 @@ if (averageBest > qualificationDistance) {
 }
 */
 
+const Ids = {};
 
-//Альтернативное решение (Перебором находять max значеня и добавлять их в массив):
+Ids[1] = true;
 
-let attempts = [120, 150, 160, 201, 203, 180, 202, 190, 195];
-let bestAttempt = 0;
-let attemptsBest = [];
-let quantityBestAttempts = 3;
-
-for (let j = 0; j <= quantityBestAttempts - 1; j++) {
-
-  for (let i = 0; i <= attempts.length - 1; i++) {
-    let isBestAttempt = attempts[i];
-    if (isBestAttempt < attempts[i + 1] && attempts[i + 1] > bestAttempt) {
-      bestAttempt = attempts[i + 1];
-    }
-  }
-
-  attemptsBest[j] = bestAttempt;
-}
-
-console.log(attemptsBest);
-
+console.log(Ids);

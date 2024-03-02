@@ -15,7 +15,7 @@
 ВАЖНО! Не должны повторяться ID объектов (фото, комментарии) и URL фотографий.
 */
 
-let photoDescriptions = [
+const photoDescriptions = [
   'Коллекция морских ракушек',
   'КотОстрофа',
   'Альтернативные способы заварки кофе',
@@ -43,7 +43,7 @@ let photoDescriptions = [
   '25-й пост'
 ];
 
-let commentMessages = [
+const commentMessages = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -52,7 +52,7 @@ let commentMessages = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-let commentNames = [
+const commentNames = [
   'Васисуасилий Камушкин',
   'Познер АК47',
   'Линкольн Викторович',
@@ -72,82 +72,110 @@ let commentNames = [
   'Бобр Добр'
 ];
 
-let commentInfo = {};
-
-let photoInfo = {};
-
-let photosArr = [];
-
-/*Создаём функцию, отвечающую за создание случайных чисел*/
+/*Функция генерации случайных чисел*/
 
 function getRandomInt (minInt, maxInt) {
-  let randomInt = Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
+  const randomInt = Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
   return randomInt;
 }
 
-/*Генерируем объекты для "comments".*/
+/*Создание и проверка id комментария.*/
 
-function getCommentInfo() {
-  commentInfo.id = getRandomInt(1, Number.MAX_SAFE_INTEGER);
-  commentInfo.avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
-  commentInfo.message = commentMessages[getRandomInt(0, commentMessages.length - 1)];
-  commentInfo.name = commentNames[getRandomInt(0, commentNames.length - 1)];
+const commentIds = {};
 
-  return commentInfo;
+function getUniqueCommentId() {
+  let id = getRandomInt(1, Number.MAX_SAFE_INTEGER);
+  if (commentIds[id] === true) {
+    id = getRandomInt(1, Number.MAX_SAFE_INTEGER);
+  }
+  commentIds[id] = true;
+
+  return id;
 }
 
-/*
-Создаём массив с комментариями:
-  1. Добавляем в массив comments случайное число объектов 0-30.
-  2. Присваиваем переменной "currentComment" вызов функции "getCommentInfo", генерируя новый объект.
-  3. Перебираем массив с объектами на предмет совпадения имеющихся id с id у актуального объекта "currentComment".
-*/
+/*Генерация комментария*/
 
-function addCommentInfoToPhotoInfo() {
-  let commentsArr = photoInfo.comments;
-  commentsArr = [];
-  let commentsCount = getRandomInt(0, 30);
+function getComment() {
+  const id = getUniqueCommentId();
+  const avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
+  const message = commentMessages[getRandomInt(0, commentMessages.length - 1)];
+  const name = commentNames[getRandomInt(0, commentNames.length - 1)];
 
+  return {
+    id,
+    avatar,
+    message,
+    name,
+  };
+}
+
+/*Добавление комментариев в массив*/
+
+function getCommentsArr() {
+  const commentsArr = [];
+  const commentsCount = getRandomInt(0, 30);
   while (commentsArr.length <= commentsCount) {
-    let currentComment = getCommentInfo();
-    commentsArr.forEach((element) => {
-      while (element.id === currentComment.id) {
-        currentComment = getCommentInfo();
-      }
-      commentsArr.push(currentComment);
-    });
+    commentsArr.push(getComment());
   }
 
-  return photoInfo.comments;
+  return commentsArr;
 }
 
-/*Генерируем объект с информацией о фотографии "photoInfo"*/
+/*Создание и проверка id фотографии*/
 
-function getPhotoInfo () {
-  photoInfo.id = getRandomInt(1, 25);
-  photoInfo.url = `photos/${getRandomInt(1, 25)}.jpg`;
-  photoInfo.description = photoDescriptions[getRandomInt(0, photoDescriptions.length - 1)];
-  photoInfo.likes = getRandomInt(15, 250);
-  photoInfo.comments = addCommentInfoToPhotoInfo();
+const photoIds = {};
 
-  return photoInfo;
+function getUniquePhotoId() {
+  let id = getRandomInt(1, 25);
+  if (photoIds[id] === true) {
+    id = getRandomInt(1, 25);
+  }
+  photoIds[id] = true;
+
+  return id;
 }
 
-/*Генериурем массив с фотографиями, описанными в виде объектов*/
+/*Создание и проверка url фотографии*/
 
-function addPhotoInfoToArray (photoCounts) {
-  while (photosArr.length <= photoCounts) {
-    let currentPhoto = getPhotoInfo();
+const photoUrls = {};
 
-    photosArr.forEach((element) => {
-      while (element.id === currentPhoto.id) {
-        currentPhoto = getPhotoInfo();
-      }
-      photosArr.push(currentPhoto);
-    });
+function getUniquePhotoUrl() {
+  let id = getRandomInt(1, 25);
+  if (photoUrls[id] === true) {
+    id = getRandomInt(1, 25);
+  }
+  photoUrls[id] = true;
+
+  return id;
+}
+
+/*Генерация фото*/
+
+function getPhoto() {
+  const id = getUniquePhotoId();
+  const url = `photos/${getUniquePhotoUrl()}.jpg`;
+  const description = photoDescriptions[getRandomInt(0, photoDescriptions.length - 1)];
+  const likes = getRandomInt(15, 250);
+  const comments = getCommentsArr();
+
+  return {
+    id,
+    url,
+    description,
+    likes,
+    comments
+  };
+}
+
+/*Добавление фотографий в массив*/
+
+function getPhotosArr() {
+  const photosArr = [];
+  while (photosArr.length < 25) {
+    photosArr.push(getPhoto());
   }
 
   return photosArr;
 }
 
-console.log(addPhotoInfoToArray(25));
+console.log(getPhotosArr());
