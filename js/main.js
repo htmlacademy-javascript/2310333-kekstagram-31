@@ -74,29 +74,31 @@ const commentNames = [
 
 /*Функция генерации случайных чисел*/
 
-function getRandomInt (minInt, maxInt) {
+const getRandomInt = function (minInt, maxInt) {
   const randomInt = Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
   return randomInt;
-}
+};
 
-/*Создание и проверка id комментария.*/
+/*Функция генерации уникальных чисел в заданном диапазоне + проверка на уникальность*/
 
-const commentIds = {};
+const getUniqueId = (minInt, maxInt) => {
+  const uniqueIds = {};
 
-function getUniqueCommentId() {
-  let id = getRandomInt(1, Number.MAX_SAFE_INTEGER);
-  if (commentIds[id] === true) {
-    id = getRandomInt(1, Number.MAX_SAFE_INTEGER);
-  }
-  commentIds[id] = true;
+  return () => {
+    let uniqueId = getRandomInt(minInt, maxInt);
+    if (uniqueIds[uniqueId] === true) {
+      uniqueId = getRandomInt(minInt, maxInt);
+    }
+    uniqueIds[uniqueId] = true;
 
-  return id;
-}
+    return uniqueId;
+  };
+};
 
 /*Генерация комментария*/
 
-function getComment() {
-  const id = getUniqueCommentId();
+const getComment = () => {
+  const id = getUniqueId(1, Number.MAX_SAFE_INTEGER);
   const avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
   const message = commentMessages[getRandomInt(0, commentMessages.length - 1)];
   const name = commentNames[getRandomInt(0, commentNames.length - 1)];
@@ -107,11 +109,11 @@ function getComment() {
     message,
     name,
   };
-}
+};
 
 /*Добавление комментариев в массив*/
 
-function getCommentsArr() {
+const getCommentsArr = () => {
   const commentsArr = [];
   const commentsCount = getRandomInt(0, 30);
   while (commentsArr.length <= commentsCount) {
@@ -119,41 +121,13 @@ function getCommentsArr() {
   }
 
   return commentsArr;
-}
-
-/*Создание и проверка id фотографии*/
-
-const photoIds = {};
-
-function getUniquePhotoId() {
-  let id = getRandomInt(1, 25);
-  if (photoIds[id] === true) {
-    id = getRandomInt(1, 25);
-  }
-  photoIds[id] = true;
-
-  return id;
-}
-
-/*Создание и проверка url фотографии*/
-
-const photoUrls = {};
-
-function getUniquePhotoUrl() {
-  let id = getRandomInt(1, 25);
-  if (photoUrls[id] === true) {
-    id = getRandomInt(1, 25);
-  }
-  photoUrls[id] = true;
-
-  return id;
-}
+};
 
 /*Генерация фото*/
 
-function getPhoto() {
-  const id = getUniquePhotoId();
-  const url = `photos/${getUniquePhotoUrl()}.jpg`;
+const getPhoto = () => {
+  const id = getUniqueId(1, 25);
+  const url = `photos/${getUniqueId(1, 25)}.jpg`;
   const description = photoDescriptions[getRandomInt(0, photoDescriptions.length - 1)];
   const likes = getRandomInt(15, 250);
   const comments = getCommentsArr();
@@ -165,7 +139,7 @@ function getPhoto() {
     likes,
     comments
   };
-}
+};
 
 /*Добавление фотографий в массив*/
 
